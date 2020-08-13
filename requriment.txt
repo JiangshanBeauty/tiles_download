@@ -1,0 +1,10 @@
+pdf2image
+traceback
+matplotlib
+numpy
+pandas
+geopandas
+shapely
+PIL
+pygeotile
+fiona

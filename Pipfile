@@ -1,0 +1,25 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+pdf2image = "*"
+traceback = "*"
+matplotlib = "*"
+numpy = "*"
+pandas = "*"
+geopandas = "*"
+shapely = "*"
+pil = "*"
+pygeotile = "*"
+fiona = {path = "C:/Users/mzy/Downloads/Fiona-1.8.13-cp37-cp37m-win_amd64.whl"}
+gdal = {path = "C:/Users/mzy/Downloads/GDAL-3.1.2-cp37-cp37m-win_amd64.whl"}
+pyproj = {path = "C:/Users/mzy/Downloads/pyproj-2.4.2.post1-cp37-cp37m-win_amd64.whl"}
+flask = "*"
+requests = "*"
+
+[requires]
+python_version = "3.7"
