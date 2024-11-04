@@ -42,7 +42,7 @@ def create_image_url(minlon, minlat, maxlon, maxlat, minzoom, maxzoom, basetileu
                 if os.path.exists(savepath):
                     continue
                 # tileurl = basetileurl + '&x=%d&y=%d&z=%d' % (x, y, zoom)
-                tileurl = basetileurl + '/%d/%d/%d' % (zoom, y, x)
+                tileurl = basetileurl + '/%d/%d/%d' % (zoom, y, x)+'.png'
                 imagelists.put((tileurl, savepath))
 
     return imagelists
@@ -51,6 +51,9 @@ def create_image_url(minlon, minlat, maxlon, maxlat, minzoom, maxzoom, basetileu
 def save_image(image):
     try:
         tileurl, savepath = image[0], image[1]
+        # 如果文件存在，则不保存
+        if os.path.exists(savepath):
+            return
         request.urlretrieve(tileurl, savepath)
         print('---- PID:', os.getpid(), tileurl)
     except Exception as e:
@@ -61,21 +64,23 @@ def save_image(image):
 
 if __name__ == '__main__':
     # minlon, minlat = -66.10748291, -84  # 矩形区域左下角坐标
-    minlon, minlat = -66.046371459, 17.82060811  # 矩形区域左下角坐标
-    maxlon, maxlat = -65.4325103759, 18.2906458305969  # 矩形区域右上角坐标
+    minlon, minlat = 118.019907,24.440990 # 矩形区域左下角坐标
+    maxlon, maxlat = 118.034305,24.453179 # 矩形区域右上角坐标
     # maxlon, maxlat =  -64.508972167, 84  # 矩形区域右上角坐标
-    minzoom, maxzoom = 2, 11
+    minzoom, maxzoom = 19, 19
 
     # basetileurl = 'http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8'
     # basetileurl = 'https://tiles.arcgis.com/tiles/C8EMgrsFcRFL6LrL/arcgis/rest/services/GEBCO_basemap_NCEI/MapServer/tile'
-    basetileurl = 'https://tiles.arcgis.com/tiles/C8EMgrsFcRFL6LrL/arcgis/rest/services/multibeam_mosaic_hillshade/MapServer/tile'
+    # basetileurl = 'https://tiles.arcgis.com/tiles/C8EMgrsFcRFL6LrL/arcgis/rest/services/multibeam_mosaic_hillshade/MapServer/tile'
     # basetileurl = 'http://mt2.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x=%d&y=%d&z=%d'%(x, y, zoom)
     # basetileurl = 'http://wprd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x=%d&y=%d&z=%d&scl=1&ltype=11'
-    rootpath = './tilefile2'
+    basetileurl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile'
+    # basetileurl = 'http://g3.ships66.com/maps/gpi'
+    rootpath = './arcgis'
     start_time = time.time()
     imagelists = create_image_url(minlon, minlat, maxlon, maxlat, minzoom, maxzoom, basetileurl, rootpath)
     print('---- Init size', imagelists.qsize())
-    p = Pool(processes=4)
+    p = Pool(processes=8)
     while True:
         print('---- Length', imagelists.qsize())
         if imagelists.empty():  # 为空退出循环结束线程

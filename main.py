@@ -10,12 +10,17 @@ app = Flask(__name__)
 
 @app.route("/tile")
 def tile():
-    x = request.args['x']
-    y = request.args['y']
-    z = request.args['z']
+    x = int(request.args['x'])
+    y = int(request.args['y'])
+    z = int(request.args['z'])
     t = Tile(x, y, z)
-    with open('E:/Work/project/杭州-tea/瓦片/offline-tileServer/tilefile/%s/%s_%s.png'%(z, x, y), 'rb') as f:
-        image = f.read()
+    try:
+        with open('C:/Users/mzy/ideaproject/tiles_download/tilefile/%s/%s/%s.png'%(z,x,y), 'rb') as f:
+            image = f.read()
+    except FileNotFoundError:
+        return jsonify({'error': 'Tile not found'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
     tile_counter[t] += 1
     return Response(image, mimetype='image/jpeg')
 
