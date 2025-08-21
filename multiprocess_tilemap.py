@@ -49,8 +49,9 @@ if __name__ == '__main__':
     maxlon, maxlat = 117.182, - 25.5 # 矩形区域右上角坐标
     minzoom, maxzoom = 12, 12
 
-    basetileurl = 'http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8'
+    #basetileurl = 'http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8'
     # basetileurl = 'http://mt2.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn&x=%d&y=%d&z=%d'%(x, y, zoom)
+    #basetileurl = 'http://10.10.66.245:8888/tile/green?x=%d&y=%d&z=%d'%(x, y, zoom)
     # basetileurl = 'http://wprd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x=%d&y=%d&z=%d&scl=1&ltype=11'
     rootpath = './tilefile'
 

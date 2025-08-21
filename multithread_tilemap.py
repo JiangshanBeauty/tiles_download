@@ -19,6 +19,7 @@ def create_image_url(minlon, minlat, maxlon, maxlat, minzoom, maxzoom, basetileu
     for zoom in range(minzoom, maxzoom + 1):
         mintile = Tile.for_latitude_longitude(latitude = minlat, longitude = minlon, zoom = zoom)
         maxtile = Tile.for_latitude_longitude(latitude = maxlat, longitude = maxlon, zoom = zoom)
+        gg = Tile.google(maxtile)
 
         print('mintile', 'X:', mintile.tms_x, 'Y:', mintile.tms_y, 'zoom:', mintile.zoom)
         print('maxtile', 'Y:', maxtile.tms_x, 'Y:', maxtile.tms_y, 'zoom:', maxtile.zoom)
@@ -33,7 +34,7 @@ def create_image_url(minlon, minlat, maxlon, maxlat, minzoom, maxzoom, basetileu
         for x in range(mintms_x, maxtms_x + 1):
             for y in range(maxtms_y, mintms_y + 1):
                 savepath = './%s/%d/%d_%d.png'%(rootpath, zoom, x, y)
-                tileurl = basetileurl + '&x=%d&y=%d&z=%d'%(x, y, zoom)
+                tileurl = basetileurl + '&TILEROW=%d&TILECOL=%d&TILEMATRIX=%d'%(x, y, zoom)
                 imagelists.put((tileurl, savepath))
 
         return imagelists
@@ -63,7 +64,8 @@ def main():
     minzoom, maxzoom = 13, 13
 
     # basetileurl = 'http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8'
-    basetileurl = 'http://mt2.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn'
+    # basetileurl = 'http://mt2.google.cn/vt/lyrs=m&hl=zh-CN&gl=cn'
+    basetileurl = 'https://t4.tianditu.gov.cn/vec_w/wmts?t=tianditu&SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&tk=41177b380c00b641b48afdeaaf4ffaef'
     # basetileurl = 'http://wprd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x=%d&y=%d&z=%d&scl=1&ltype=11'%(x, y, zoom)
     rootpath = './tilefile'
 
@@ -72,10 +74,11 @@ def main():
 
     imagelists = create_image_url(minlon, minlat, maxlon, maxlat, minzoom, maxzoom, basetileurl, rootpath)
     print('---- Init size', imagelists.qsize())
+    # td = ""
     for i in range(threadNum):
         td = threading.Thread(target = save_image, args = (imagelists, ))
         td.start()
-    td.stop()
+    # td.stop()
     
 if __name__ == '__main__':
     main()
